@@ -58,7 +58,9 @@
                 var results=JSON.parse(this.responseText);
                 self.lunchList=results.lunchList;
                 localStorage.lunch=self.lunchList.join();
-                callback();
+                if(callback&&typeof callback==='function'){
+                    callback();
+                }
             }else{
                 console.log(e);
             }
@@ -101,6 +103,7 @@
 
         if(lun.lunchList.length==0){
             result.innerHTML='没有菜单,请编辑菜单';
+            return;
         }
 
         var num=Math.floor(Math.random()*lun.lunchList.length);
