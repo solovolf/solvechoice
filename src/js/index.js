@@ -98,7 +98,11 @@
         if(page!='main')
             return;
         var result=document.getElementById("result");
-        result.className="result";
+
+        if(lun.lunchList.length==0){
+            result.innerHTML='没有菜单,请编辑菜单';
+        }
+
         var num=Math.floor(Math.random()*lun.lunchList.length);
         result.innerHTML="摇得"+lun.lunchList[num]+"！";
     }
