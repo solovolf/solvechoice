@@ -3,6 +3,8 @@
  */
 (function(){
     "use strict"
+    var page='main';
+
     Array.prototype.inArray=function(elem){
         var i=0,
             len=this.length;
@@ -93,6 +95,8 @@
     myShakeEvent.start();
     window.addEventListener('shake',shakeEventDidOccur,false);
     function shakeEventDidOccur(){
+        if(page!='main')
+            return;
         var result=document.getElementById("result");
         result.className="result";
         var num=Math.floor(Math.random()*lun.lunchList.length);
@@ -112,9 +116,11 @@
     document.getElementById('btn_edit').addEvent('tap',function(eve){
         document.getElementById('edit_wrapper').style.display='block';
         lun.showList();
+        page='edit';
     });
     document.getElementById('btn_return').addEvent('tap',function(eve){
         document.getElementById('edit_wrapper').style.display='none';
+        page='main';
     });
     
     document.getElementById('list_wrapper').delegate('tap','close',function(eve,target){
