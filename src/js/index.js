@@ -140,7 +140,7 @@
 
 	document.getElementById('btn_add').addEvent('tap', function(eve) {
 		var menuItem = prompt('请输入菜单名:', '');
-		if (menuItem.trim()) {
+		if (menuItem&&menuItem.trim()) {
 			lun.addLunchItem(menuItem);
 			lun.showList();
 		}
