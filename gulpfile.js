@@ -19,7 +19,7 @@ var fs=require('fs'),
     browserSync=require('browser-sync').create(),
     processhtml=require('gulp-processhtml'),
     fileinclude=require('gulp-file-include');
-var htmlList=['test.html'];
+var htmlList=[];
 var htmlSrc='src';
 var minifySrc='dist';
 
@@ -124,7 +124,6 @@ function addUrlToList(list){
         list[i]=htmlSrc+'/'+list[i]
     }
 }
-
 
 /*
 task

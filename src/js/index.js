@@ -145,4 +145,8 @@
             lun.showList();
         }
     });
+    
+    window.onload=function(){
+        document.getElementById("loading").classList.add('fadeout');
+    }
 })()
