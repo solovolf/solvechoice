@@ -3,6 +3,15 @@
  */
 (function(){
     "use strict"
+    /*
+     fastclick
+     */
+    try{
+        FastClick.attach(document.body);
+    }catch(e){
+
+    }
+
     var page='main';
     //数组工具
     Array.prototype.inArray=function(elem){
@@ -80,7 +89,7 @@
     Lunch.prototype.showList=function(){
         var html='';
         for(var i=0; i<this.lunchList.length; i++){
-            html+='<div class="item" data-index="'+i+'">'+this.lunchList[i]+'<span class="close">✕</span>'+'</div>'
+            html+='<div class="item" data-index="'+i+'"><span class="menu_name">'+this.lunchList[i]+'</span><span class="close">✕</span>'+'</div>'
         }
         document.getElementById('list_wrapper').innerHTML=html;
     }
@@ -102,6 +111,7 @@
             result.innerHTML='没有菜单,请编辑菜单';
             return;
         }
+        document.getElementById("reswrapper").style.display='block';
         var num=Math.floor(Math.random()*lun.lunchList.length);
         result.innerHTML="摇得"+lun.lunchList[num]+"！";
     }
@@ -109,26 +119,26 @@
     /*
      btn event
      */
-    document.getElementById('btn_default').addEvent('tap',function(eve){
+    document.getElementById('btn_default').addEventListener('click',function(eve){
         lun.getJson(function(){
             lun.showList();
         });
     });
-    document.getElementById('btn_edit').addEvent('tap',function(eve){
+    document.getElementById('btn_edit').addEventListener('click',function(eve){
         document.getElementById('edit_wrapper').style.display='block';
         lun.showList();
         page='edit';
     });
-    document.getElementById('btn_return').addEvent('tap',function(eve){
+    document.getElementById('btn_return').addEventListener('click',function(eve){
         document.getElementById('edit_wrapper').style.display='none';
         page='main';
     });
-    document.getElementById('list_wrapper').delegate('tap','close',function(eve,target){
+    document.getElementById('list_wrapper').delegate('click','close',function(eve,target){
         var index=target.parentNode.attributes['data-index'].value;
         lun.removeLunchItem(parseInt(index));
         lun.showList();
     });
-    document.getElementById('btn_add').addEvent('tap',function(eve){
+    document.getElementById('btn_add').addEventListener('click',function(eve){
         var menuItem=prompt('请输入菜单名:','');
         if(menuItem&&menuItem.trim()){
             lun.addLunchItem(menuItem);
