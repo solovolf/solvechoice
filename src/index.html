@@ -8,17 +8,26 @@
 </head>
 <body>
   <div id="main_content">
-    <input type="button" value="编辑菜单" id="btn_edit">
-    <div id="result">摇一摇待会吃什么</div>
+    <div id="editbtnwrapper">
+      <input type="button" value="编辑菜单" id="btn_edit">
+    </div>
+    <div id="main_banner">
+      <img src="img/yao.png"/>
+      <span>摇一摇待会吃什么</span>
+    </div>
+    <div id="reswrapper">
+      <span>摇得:</span>
+      <span id="result">摇一摇待会吃什么</span>
+    </div>
   </div>
   <div id="edit_wrapper">
     <input type="button" value="恢复默认菜单" id="btn_default">
     <input type="button" value="返回主菜单" id="btn_return">
     <div id="list_wrapper">
     </div>
-    <input type="button" value="添加菜单" id="btn_add"/>
+    <div id="btn_add"/>+</div>
   </div>
-  <script src="js/event-tap.js"></script>
+  <script src="js/fastclick.min.js"></script>
   <script src="js/event-delegate.js"></script>
   <script src="js/shake.js"></script>
   <script src="js/index.js"></script>
