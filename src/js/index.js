@@ -147,6 +147,10 @@
     });
     
     window.onload=function(){
-        document.getElementById("loading").classList.add('fadeout');
+        var loading=document.getElementById("loading");
+        loading.classList.add('fadeout');
+        setTimeout(function(){
+            loading.style.display='none';
+        },200);
     }
 })()

@@ -22,20 +22,8 @@ var fs=require('fs'),
 var htmlList=[];
 var htmlSrc='src';
 var minifySrc='dist';
+var copySrc=['img','data'];//不需要压缩,但是要复制到dist目录下的文件夹名称
 
-
-/*
- 获得当前路径下的所有html
- */
-function getHtmlList(){
-    var files=fs.readdirSync(__dirname+'/'+htmlSrc);
-    for(var i=0; i<files.length; i++){
-        var fileName=files[i].split('.');
-        if(fileName.length>1&&fileName[fileName.length-1]==='html'){
-            htmlList.push(files[i]);
-        }
-    }
-}
 /*
  对路径下所有的html进行操作,是总的调用方法
  */
@@ -50,13 +38,25 @@ function handleHtml(){
         if(cssList){
             minifyCssList(cssList,htmlList[i]);
         }
-
+        //copyFiles();
         gulp.src('src/'+htmlList[i])
             .pipe(processhtml())
             .pipe(gulp.dest('dist/'))
             .pipe(notify({
                 message:"操作完成"
             }));
+    }
+}
+/*
+ 获得当前路径下的所有html
+ */
+function getHtmlList(){
+    var files=fs.readdirSync(__dirname+'/'+htmlSrc);
+    for(var i=0; i<files.length; i++){
+        var fileName=files[i].split('.');
+        if(fileName.length>1&&fileName[fileName.length-1]==='html'){
+            htmlList.push(files[i]);
+        }
     }
 }
 /*
@@ -125,13 +125,78 @@ function addUrlToList(list){
     }
 }
 
+function copyFiles(){
+    for(var i=0;i<copySrc.length;i++){
+        var files=fs.readdirSync(__dirname+'/'+htmlSrc+'/'+copySrc[i]);
+        copyDir(htmlSrc+'/'+copySrc[i],minifySrc,function(err){
+            if(err){
+                console.log(err+':'+files[i]+'转换错误');
+            }
+        })
+    }
+}
+/*
+ * 复制目录、子目录，及其中的文件
+ * @param src {String} 要复制的目录
+ * @param dist {String} 复制到目标目录
+ */
+function copyDir(src, dist, callback) {
+    fs.access(__dirname+'/'+dist, function(err){
+        if(err){
+            // 目录不存在时创建目录
+            fs.mkdirSync(__dirname+'/'+dist);
+        }
+        _copy(null, src, dist);
+    });
+
+    function _copy(err, src, dist) {
+        if(err){
+            callback(err);
+        } else {
+            fs.readdir(src, function(err, paths) {
+                if(err){
+                    callback(err)
+                } else {
+                    paths.forEach(function(path) {
+                        var _src = src + '/' +path;
+                        var _dist = dist + '/' +path;
+                        fs.stat(_src, function(err, stat) {
+                            if(err){
+                                callback(err);
+                            } else {
+                                // 判断是文件还是目录
+                                if(stat.isFile()) {
+                                    fs.writeFileSync(_dist, fs.readFileSync(_src));
+                                } else if(stat.isDirectory()) {
+                                    // 当是目录是，递归复制
+                                    copyDir(_src, _dist, callback)
+                                }
+                            }
+                        })
+                    })
+                }
+            })
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+handleHtml();
+
 /*
 task
  */
 gulp.task('clean', function(cb) {
     del(['dist/css', 'dist/js'], cb)
 });
-gulp.task('buildhtml',function(){
+gulp.task('build',function(){
     handleHtml();
 });
 gulp.task('watch', function() {
