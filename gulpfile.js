@@ -1,9 +1,9 @@
 /*
- html处压缩用到的注释必须与processhtml插件的一样 否则无法正确压缩
+ gulp 构建基础版
+ 将压缩后的js/css文件和重新指定引用地址的html文件全部放到dist目录中
 
- 目前的功能是将某个目录下所有的html文件(不包含嵌套)都进行检索压缩到dist目录下,如果html文件正确包含了压缩css/js的注释标记则html里面的文件会被正确压缩,否则压缩后的html文件将不能正确引用js/css资源
-
- 后面将要把没有被标记压缩的js/css文件也同步压缩到dist目录下,但是这些未被标记的文件将不会被合并
+ 需要复制的目录不支持子目录,必须在copySrc中进行配置,如果有子目录需要写明
+ 重新制定js/css资源的html所指定的文件名需要在两处进行配置(html和js中)这个将在后续版本中进行改动
  */
 
 
@@ -19,27 +19,17 @@ var fs=require('fs'),
     browserSync=require('browser-sync').create(),
     processhtml=require('gulp-processhtml'),
     fileinclude=require('gulp-file-include');
-var htmlList=['test.html'];
+var htmlList=[];
 var htmlSrc='src';
 var minifySrc='dist';
+var copySrc=['img','data'];//不需要压缩,但是要复制到dist目录下的文件夹名称
 
-
-/*
- 获得当前路径下的所有html
- */
-function getHtmlList(){
-    var files=fs.readdirSync(__dirname+'/'+htmlSrc);
-    for(var i=0; i<files.length; i++){
-        var fileName=files[i].split('.');
-        if(fileName.length>1&&fileName[fileName.length-1]==='html'){
-            htmlList.push(files[i]);
-        }
-    }
-}
 /*
  对路径下所有的html进行操作,是总的调用方法
  */
 function handleHtml(){
+    copyFiles();
+
     getHtmlList();
     for(var i=0; i<htmlList.length; i++){
         var jsList=getHtmlJsList(htmlList[i]);
@@ -50,13 +40,25 @@ function handleHtml(){
         if(cssList){
             minifyCssList(cssList,htmlList[i]);
         }
-
         gulp.src('src/'+htmlList[i])
             .pipe(processhtml())
-            .pipe(gulp.dest('dist/'))
-            .pipe(notify({
-                message:"操作完成"
-            }));
+            .pipe(gulp.dest('dist/'));
+    }
+
+    gulp.src('src').pipe(notify({
+        message:"操作完成"
+    }));
+}
+/*
+ 获得当前路径下的所有html
+ */
+function getHtmlList(){
+    var files=fs.readdirSync(__dirname+'/'+htmlSrc);
+    for(var i=0; i<files.length; i++){
+        var fileName=files[i].split('.');
+        if(fileName.length>1&&fileName[fileName.length-1]==='html'){
+            htmlList.push(files[i]);
+        }
     }
 }
 /*
@@ -125,6 +127,12 @@ function addUrlToList(list){
     }
 }
 
+function copyFiles(){
+    for(var i=0;i<copySrc.length;i++){
+        gulp.src([htmlSrc+'/'+copySrc[i]+'/*.*']).pipe(gulp.dest(minifySrc+'/'+copySrc[i]));
+    }
+}
+
 
 /*
 task
@@ -132,7 +140,7 @@ task
 gulp.task('clean', function(cb) {
     del(['dist/css', 'dist/js'], cb)
 });
-gulp.task('buildhtml',function(){
+gulp.task('build',function(){
     handleHtml();
 });
 gulp.task('watch', function() {

@@ -145,4 +145,12 @@
             lun.showList();
         }
     });
+    
+    window.onload=function(){
+        var loading=document.getElementById("loading");
+        loading.classList.add('fadeout');
+        setTimeout(function(){
+            loading.style.display='none';
+        },200);
+    }
 })()
