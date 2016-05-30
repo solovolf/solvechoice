@@ -153,7 +153,6 @@ function changeHtmlResource(htmlName){
     });
 }
 
-handleHtml();
 
 /*
 task
