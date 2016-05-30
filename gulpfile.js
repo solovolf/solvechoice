@@ -1,9 +1,9 @@
 /*
- html处压缩用到的注释必须与processhtml插件的一样 否则无法正确压缩
+ gulp 构建基础版
+ 将压缩后的js/css文件和重新指定引用地址的html文件全部放到dist目录中
 
- 目前的功能是将某个目录下所有的html文件(不包含嵌套)都进行检索压缩到dist目录下,如果html文件正确包含了压缩css/js的注释标记则html里面的文件会被正确压缩,否则压缩后的html文件将不能正确引用js/css资源
-
- 后面将要把没有被标记压缩的js/css文件也同步压缩到dist目录下,但是这些未被标记的文件将不会被合并
+ 需要复制的目录不支持子目录,必须在copySrc中进行配置,如果有子目录需要写明
+ 重新制定js/css资源的html所指定的文件名需要在两处进行配置(html和js中)这个将在后续版本中进行改动
  */
 
 
@@ -28,6 +28,8 @@ var copySrc=['img','data'];//不需要压缩,但是要复制到dist目录下的�
  对路径下所有的html进行操作,是总的调用方法
  */
 function handleHtml(){
+    copyFiles();
+
     getHtmlList();
     for(var i=0; i<htmlList.length; i++){
         var jsList=getHtmlJsList(htmlList[i]);
@@ -38,14 +40,14 @@ function handleHtml(){
         if(cssList){
             minifyCssList(cssList,htmlList[i]);
         }
-        //copyFiles();
         gulp.src('src/'+htmlList[i])
             .pipe(processhtml())
-            .pipe(gulp.dest('dist/'))
-            .pipe(notify({
-                message:"操作完成"
-            }));
+            .pipe(gulp.dest('dist/'));
     }
+
+    gulp.src('src').pipe(notify({
+        message:"操作完成"
+    }));
 }
 /*
  获得当前路径下的所有html
@@ -127,68 +129,10 @@ function addUrlToList(list){
 
 function copyFiles(){
     for(var i=0;i<copySrc.length;i++){
-        var files=fs.readdirSync(__dirname+'/'+htmlSrc+'/'+copySrc[i]);
-        copyDir(htmlSrc+'/'+copySrc[i],minifySrc,function(err){
-            if(err){
-                console.log(err+':'+files[i]+'转换错误');
-            }
-        })
-    }
-}
-/*
- * 复制目录、子目录，及其中的文件
- * @param src {String} 要复制的目录
- * @param dist {String} 复制到目标目录
- */
-function copyDir(src, dist, callback) {
-    fs.access(__dirname+'/'+dist, function(err){
-        if(err){
-            // 目录不存在时创建目录
-            fs.mkdirSync(__dirname+'/'+dist);
-        }
-        _copy(null, src, dist);
-    });
-
-    function _copy(err, src, dist) {
-        if(err){
-            callback(err);
-        } else {
-            fs.readdir(src, function(err, paths) {
-                if(err){
-                    callback(err)
-                } else {
-                    paths.forEach(function(path) {
-                        var _src = src + '/' +path;
-                        var _dist = dist + '/' +path;
-                        fs.stat(_src, function(err, stat) {
-                            if(err){
-                                callback(err);
-                            } else {
-                                // 判断是文件还是目录
-                                if(stat.isFile()) {
-                                    fs.writeFileSync(_dist, fs.readFileSync(_src));
-                                } else if(stat.isDirectory()) {
-                                    // 当是目录是，递归复制
-                                    copyDir(_src, _dist, callback)
-                                }
-                            }
-                        })
-                    })
-                }
-            })
-        }
+        gulp.src([htmlSrc+'/'+copySrc[i]+'/*.*']).pipe(gulp.dest(minifySrc+'/'+copySrc[i]));
     }
 }
 
-
-
-
-
-
-
-
-
-handleHtml();
 
 /*
 task
