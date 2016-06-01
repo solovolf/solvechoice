@@ -1,5 +1,6 @@
 @charset "utf-8";
-html,body,input,select,textarea,img{-webkit-appearance: none;font-size: 12px;margin: 0;padding: 0;font-family: 'Helvetica Neue',"Microsoft Yahei",sans-serif;}
+/*html,body,input,select,textarea,img{-webkit-appearance: none;font-size: 12px;margin:0;padding:0;font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif;}*/
+html,body,input,select,textarea,img{-webkit-appearance: none;font-size: 12px;margin:0;padding:0;font-family: 'Bree Serif', serif;}
 ul,p,span,h1,h2,h3,h4,h5,h6{-webkit-appearance: none;margin: 0;padding: 0;}
 li{list-style: none;}
 a{text-decoration: none;}
@@ -20,7 +21,7 @@ img{vertical-align: middle;}
 
 #main_content{position:fixed;top:0;left:0;width:100%;height:100%;background-color:#FFFFFF;z-index:1;text-align:center}
 
-#editbtnwrapper{background-image:url('../img/bg.jpg');background-size:100%;height:28vh;background-position:0 -10vh;line-height:28vh;vertical-align:middle;text-align:center;}
+#editbtnwrapper{background-image:url('../img/bg.jpg');background-size:100%;height:32vh;background-position:0 -10vh;line-height:32vh;vertical-align:middle;text-align:center;}
 #btn_edit{background-color:rgba(97, 97, 97, 0.3);color:#FFFFFF;font-size:2rem;border:0;border-radius:4px;display:inline-block;width:34vh;height:4rem;box-shadow: 0px 4px 10px #232323;}
 #main_banner img{width:32%;display:block;margin:6vh auto 2vh auto;}
 #main_banner span{color:#BABABA;font-size:1.2rem;}
@@ -37,13 +38,12 @@ img{vertical-align: middle;}
 #btn_return{float:left;background-color:rgba(156, 156, 156, 0.5);color:#FFFFFF;font-size:1.4rem;border:0;border-radius:4px;display:inline-block;width:42vw;height:2.8rem;box-shadow: 0px 4px 10px #232323;margin:4vh 0 0 4vw;}
 #btn_default{float:right;background-color:rgba(156, 156, 156, 0.5);color:#FFFFFF;font-size:1.4rem;border:0;border-radius:4px;display:inline-block;width:42vw;height:2.8rem;box-shadow: 0px 4px 10px #232323;margin:4vh 4vw 0 0;}
 
-#list_wrapper{color:#FFFFFF;margin:6.2rem 8vw 2rem 8vw;}
+#list_wrapper{color:#FFFFFF;margin:6.2rem 8vw 0 8vw;overflow:auto;position:absolute;top:0;left:0;right:0;bottom:24vw;}
 .item{position:relative;border-radius:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:.6rem;background-color:rgba(107, 106, 105, 0.68);}
 .item .menu_name{position:relative;color:#FFFFFF;z-index:2;font-size:1.2rem;line-height:3.2rem;margin-left:1rem;}
 .item .close{font-size:2rem;position:absolute;right:0;z-index:2;display:block;top:0;height:100%;background-color:#f39800;width:3.2rem;line-height:3.2rem;text-align:center;font-weight:600;}
 
-#btn_add{position:fixed;bottom:0;right:0;width:20vw;height:20vw;border:6px solid rgba(145, 139, 133, 0.3);border-radius:20vw;background-color:#373737;font-size:6rem;color:#FFFFFF;text-align:center;line-height:15vw;}
-
+#btn_add{position:fixed;bottom:0;right:0;width:20vw;height:20vw;border:6px solid rgba(145, 139, 133, 0.3);border-radius:20vw;background-color:#373737;font-size:20vw;color:#FFFFFF;text-align:center;padding:0;line-height:16vw;}
 
 #loading{position:absolute;top:0;left:0;right:0;bottom:0;background-color:#c9c9c9;z-index:3;text-align:center;}
 #loading img{margin-top:40vh;}

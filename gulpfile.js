@@ -3,7 +3,8 @@
  将压缩后的js/css文件和重新指定引用地址的html文件全部放到dist目录中
 
  需要复制的目录不支持子目录,必须在copySrc中进行配置,如果有子目录需要写明
- 重新制定js/css资源的html所指定的文件名需要在两处进行配置(html和js中)这个将在后续版本中进行改动
+
+ 不支持子目录下的html文件
  */
 
 
@@ -40,9 +41,10 @@ function handleHtml(){
         if(cssList){
             minifyCssList(cssList,htmlList[i]);
         }
-        gulp.src('src/'+htmlList[i])
-            .pipe(processhtml())
-            .pipe(gulp.dest('dist/'));
+        //gulp.src('src/'+htmlList[i])
+        //    .pipe(processhtml())
+        //    .pipe(gulp.dest('dist/'));
+        changeHtmlResource(htmlList[i]);
     }
 
     gulp.src('src').pipe(notify({
@@ -66,7 +68,7 @@ function getHtmlList(){
  */
 function getHtmlJsList(name){
     var text=fs.readFileSync(__dirname+'/'+htmlSrc+'/'+name,'utf8');
-    var scriptStr=text.match(/<!-- build:js.+-->[\s\S]+<!-- \/build -->/g);
+    var scriptStr=text.match(/<!-- build:js.+-->[\s\S]+<!-- end:js -->/g);
     if(scriptStr&&scriptStr.length>0){
         scriptStr=scriptStr[0];
     }else{
@@ -84,7 +86,7 @@ function getHtmlJsList(name){
  */
 function getHtmlCssList(name){
     var text=fs.readFileSync(__dirname+'/'+htmlSrc+'/'+name,'utf8');
-    var styleStr=text.match(/<!-- build:css.+-->[\s\S]+<!-- \/build -->/g);
+    var styleStr=text.match(/<!-- build:css.+-->[\s\S]+<!-- end:css -->/g);
     if(styleStr&&styleStr.length>0){
         styleStr=styleStr[0];
     }
@@ -131,6 +133,24 @@ function copyFiles(){
     for(var i=0;i<copySrc.length;i++){
         gulp.src([htmlSrc+'/'+copySrc[i]+'/*.*']).pipe(gulp.dest(minifySrc+'/'+copySrc[i]));
     }
+}
+
+/*
+修改html引用文件并复制到dist
+ */
+function changeHtmlResource(htmlName){
+    fs.readdir(__dirname+'/'+minifySrc,function(err){
+        if(err){
+            fs.mkdir(__dirname+'/'+minifySrc);
+        }
+        var text=fs.readFileSync(__dirname+'/'+htmlSrc+'/'+htmlName,'utf8');
+        //修改css
+        text=text.replace(/<!-- build:css.*-->[\s\S]+<!-- end:css -->/g,'<link rel="stylesheet" href="css/'+htmlName.replace('.html','')+'.min.css">');
+        //修改js
+        text=text.replace(/<!-- build:js.*-->[\s\S]+<!-- end:js -->/g,'<script src="js/'+htmlName.replace('.html','')+'.min.js"></script>');
+        //写入html
+        fs.writeFile(__dirname+'/'+minifySrc+'/'+htmlName,text);
+    });
 }
 
 

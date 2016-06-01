@@ -60,25 +60,11 @@
         localStorage.lunch=null;
     }
     Lunch.prototype.getJson=function(callback){
-        var self=this;
-        var xhr=new XMLHttpRequest();
-        xhr.open('get','data/data.json',true);
-        xhr.onload=function(e){
-            if(this.status===200){
-                var results=JSON.parse(this.responseText);
-                self.lunchList=results.lunchList;
-                localStorage.lunch=self.lunchList.join();
-                if(callback&&typeof callback==='function'){
-                    callback();
-                }
-            }else{
-                console.log(e);
-            }
-        };
-        xhr.onerror=function(e){
-            console.log(e);
-        };
-        xhr.send(null);
+        this.lunchList=jsonData.lunchList.concat();
+        localStorage.lunch=this.lunchList.join();
+        if(callback&&typeof callback==='function'){
+            callback();
+        }
     }
     Lunch.prototype.judgeNull=function(){
         this.getLunch()
