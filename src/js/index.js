@@ -90,6 +90,10 @@
     myShakeEvent.start();
     window.addEventListener('shake',shakeEventDidOccur,false);
     function shakeEventDidOccur(){
+        var audio=document.getElementById("shake_audio");
+        audio.pause();
+        audio.currentTime = 0;
+        audio.play();
         if(page!='main')
             return;
         var result=document.getElementById("result");
