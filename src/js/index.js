@@ -12,7 +12,6 @@
 
     }
 
-    var page='main';
     //数组工具
     Array.prototype.inArray=function(elem){
         var i=0,
@@ -85,7 +84,7 @@
      bind shake
      */
     var myShakeEvent=new Shake({
-        threshold:5
+        threshold:10
     });
     myShakeEvent.start();
     window.addEventListener('shake',shakeEventDidOccur,false);
@@ -94,8 +93,6 @@
         audio.pause();
         audio.currentTime = 0;
         audio.play();
-        if(page!='main')
-            return;
         var result=document.getElementById("result");
         if(lun.lunchList.length==0){
             result.innerHTML='没有菜单,请编辑菜单';
@@ -117,11 +114,11 @@
     document.getElementById('btn_edit').addEventListener('click',function(eve){
         document.getElementById('edit_wrapper').style.display='block';
         lun.showList();
-        page='edit';
+        myShakeEvent.stop();
     });
     document.getElementById('btn_return').addEventListener('click',function(eve){
         document.getElementById('edit_wrapper').style.display='none';
-        page='main';
+        myShakeEvent.start();
     });
     document.getElementById('list_wrapper').delegate('click','close',function(eve,target){
         var index=target.parentNode.attributes['data-index'].value;
