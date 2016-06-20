@@ -138,6 +138,6 @@
         loading.classList.add('fadeout');
         setTimeout(function(){
             loading.style.display='none';
-        },200);
+        },500);
     }
 })()
