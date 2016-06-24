@@ -4,4 +4,4 @@
 
 二维码查看
 （目前只有编辑菜单和摇一摇功能，后续会更智能的加入附近的餐馆）
-![whateat](https://raw.githubusercontent.com/solovolf/entangledresolve/master/src/img/whateat.png whateat)
+![whateat](https://raw.githubusercontent.com/solovolf/entangledresolve/master/src/img/whateat.png)
