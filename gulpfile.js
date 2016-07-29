@@ -41,10 +41,10 @@ function handleHtml(){
         if(cssList){
             minifyCssList(cssList,htmlList[i]);
         }
-        //gulp.src('src/'+htmlList[i])
-        //    .pipe(processhtml())
-        //    .pipe(gulp.dest('dist/'));
-        changeHtmlResource(htmlList[i]);
+        gulp.src('src/'+htmlList[i])
+           .pipe(processhtml())
+           .pipe(gulp.dest('dist/'));
+        // changeHtmlResource(htmlList[i]);
     }
 
     gulp.src('src').pipe(notify({
@@ -68,7 +68,8 @@ function getHtmlList(){
  */
 function getHtmlJsList(name){
     var text=fs.readFileSync(__dirname+'/'+htmlSrc+'/'+name,'utf8');
-    var scriptStr=text.match(/<!-- build:js.+-->[\s\S]+<!-- end:js -->/g);
+    // var scriptStr=text.match(/<!-- build:js.+-->[\s\S]+<!-- end:js -->/g);
+    var scriptStr=text.match(/<!-- build:js.+-->[\s\S]+<!-- \/build -->/g);
     if(scriptStr&&scriptStr.length>0){
         scriptStr=scriptStr[0];
     }else{
@@ -86,7 +87,8 @@ function getHtmlJsList(name){
  */
 function getHtmlCssList(name){
     var text=fs.readFileSync(__dirname+'/'+htmlSrc+'/'+name,'utf8');
-    var styleStr=text.match(/<!-- build:css.+-->[\s\S]+<!-- end:css -->/g);
+    // var styleStr=text.match(/<!-- build:css.+-->[\s\S]+<!-- end:css -->/g);
+    var styleStr=text.match(/<!-- build:css.+-->[\s\S]+<!-- \/build -->/g);
     if(styleStr&&styleStr.length>0){
         styleStr=styleStr[0];
     }

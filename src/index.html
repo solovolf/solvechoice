@@ -1,53 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>待会吃什么</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-  <link href='http://fonts.useso.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'>
-  <!-- build:css css/index.min.css -->
-  <link rel="stylesheet" href="css/index.css">
-  <!-- end:css -->
+    <meta charset="UTF-8">
+    <title>待会吃什么</title>
+    <meta name="description"
+          content="待会吃什么(whateat.cn),是帮助你在各种心仪的食物中通过摇一摇选出你最终需要的食物。你可以提前编辑菜单,然后可以在菜单列表中抽出需要的。其实选择的最终意义不是帮你选出食物,而是让你知道自己真正想吃什么。"/>
+    <meta name="keywords" content="待会吃什么,分歧解决,纠结解决"/>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link href='http://fonts.useso.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'>
+    <!-- build:css css/index.min.css -->
+    <link rel="stylesheet" href="css/dialog.css">
+    <link rel="stylesheet" href="css/index.css">
+    <!-- /build -->
+    <!-- build:replace '<script src="https://cdn.jsdelivr.net/vue/1.0.26/vue.min.js"></script>' -->
+    <script src="js/vue.js"></script>
+    <!-- /build -->
 </head>
 <body>
-  <div id="main_content">
-    <div id="editbtnwrapper">
-      <input type="button" value="编辑菜单" id="btn_edit">
+<div id="content">
+    <div id="main_content" v-show="pageState==1">
+        <div id="editbtnwrapper">
+            <input type="button" value="编辑菜单" id="btn_edit" @click="beginEditMenu">
+        </div>
+        <div id="main_banner">
+            <img src="img/yao.png"/>
+        </div>
+        <div id="reswrapper">摇一摇待会吃什么</div>
     </div>
-    <div id="main_banner">
-      <img src="img/yao.png"/>
-      <span>摇一摇待会吃什么</span>
+    <div id="edit_wrapper" v-show="pageState==2">
+        <input type="button" value="恢复默认菜单" id="btn_default" @click="resetMenu">
+        <input type="button" value="返回主菜单" id="btn_return" @click="backToMainPage">
+        <div id="none_menu" v-show="lunchList.length==0">
+            没有菜单!<br>请点击下方加号按钮添加菜单
+        </div>
+        <div id="list_wrapper" v-show="lunchList.length>0">
+            <div v-for="item in lunchList" class="item" ><span class="menu_name">{{item}}</span><span
+                    data-index="{{$index}}" class="close" @click="delMenuItem">✕</span></div>
+        </div>
+        <div id="btn_add" @click="addMenuItem">
+            <img src="img/blossom_002.png">
+        </div>
     </div>
-    <div id="reswrapper">
-      <span>摇得:</span>
-      <span id="result">摇一摇待会吃什么</span>
+    <div id="loading" class="loaded" v-show="pageState==0">
+        <div class="loading_wrapper">
+            <div class="loader-inner pacman">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
     </div>
-  </div>
-  <div id="edit_wrapper">
-    <input type="button" value="恢复默认菜单" id="btn_default">
-    <input type="button" value="返回主菜单" id="btn_return">
-    <div id="list_wrapper">
-    </div>
-    <div id="btn_add"/>+</div>
-  </div>
-  <div id="loading" class="loaded">
-    <div class="loading_wrapper">
-      <div class="loader-inner pacman">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-    </div>
-  </div>
-  <audio id="shake_audio" src="img/5018.mp3"></audio>
-  <!-- build:js js/index.min.js -->
-  <script src="js/fastclick.min.js"></script>
-  <script src="js/event-delegate.js"></script>
-  <script src="js/shake.js"></script>
-  <script src="js/data.js"></script>
-  <script src="js/index.js"></script>
-  <!-- end:js -->
+    <audio id="shake_audio" src="img/5018.mp3"></audio>
+</div>
+<!-- build:js js/index.min.js -->
+<script src="js/shake.js"></script>
+<script src="js/dialog.js"></script>
+<script src="js/data.js"></script>
+<script src="js/index.js"></script>
+<!-- /build -->
 </body>
 </html>
