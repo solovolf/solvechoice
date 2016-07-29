@@ -1,148 +1,82 @@
-/**
- * Created by coney on 16/5/11.
- */
-(function() {
-	"use strict"
-	var page = 'main';
+(function(golbal){
+    var bodyVue=new Vue({
+        el:'#content',
+        data:{
+            pageState:0,
+            lunchList:[]
+        },
+        methods:{
+            beginEditMenu:function(eve){
+                this.pageState=2;
+                myShakeEvent.stop();
+            },
+            backToMainPage:function() {
+                this.pageState=1;
+                myShakeEvent.start();
+            },
+            resetMenu:function(msg){
+                dialog.showConfirm('提示',typeof msg ==='string'?msg:'确定要恢复到原始菜单吗?',function(){
+                    localStorage.lunch=jsonData.lunchList.join();
+                    bodyVue.lunchList=localStorage.lunch.split(',');
+                });
+            },
+            delMenuItem:function(eve){
+                var index=eve.currentTarget.getAttribute('data-index');
+                this.lunchList.splice(index,1);
+                localStorage.lunch=this.lunchList.join(',');
+            },
+            addMenuItem:function(){
+                dialog.showPropmt('请输入菜单名称',function(msg){
+                    if(msg){
+                        bodyVue.lunchList.push(msg);
+                        localStorage.lunch=bodyVue.lunchList.join(',');
+                        document.querySelector('#y_propmt .inputcontent').value='';
+                        dialog.tip('录入成功!');
+                    }else{
+                        dialog.tip('请输入菜单');
+                    }
+                });
+                document.querySelector('#y_propmt .inputcontent').focus();
+            }
+        }
+    });
 
-	//数组工具
-	Array.prototype.inArray = function(elem) {
-		var i = 0,
-			len = this.length;
-		for (; i < len; i++) {
-			if (this[i] === elem) {
-				return i;
-			}
-		}
-		return -1;
-	};
+    golbal.addEventListener('load',function(){
+        bodyVue.pageState=1;
+        if(localStorage.lunch){
+            bodyVue.lunchList=localStorage.lunch.split(',');
+        }else{
+            bodyVue.$options.methods.resetMenu('您暂时没有菜单,需要使用默认菜单吗?');
+        }
+    });
 
-	//菜单列表对象
-	function Lunch() {
-		this.lunchList = [];
-	}
-
-	Lunch.prototype.getLunch = function() {
-		this.lunchList = localStorage.lunch;
-		if (!this.lunchList) {
-			this.lunchList = [];
-		} else {
-			this.lunchList = this.lunchList.split(',');
-		}
-		if (this.lunchList[0] == 'null' || this.lunchList[0] == 'undefined') {
-			this.lunchList = [];
-		}
-	}
-	Lunch.prototype.addLunchItem = function(item) {
-		var index = this.lunchList.inArray(item);
-		if (index > -1) {
-			this.removeLunchItem(index);
-		}
-		this.lunchList.push(item);
-		localStorage.lunch = this.lunchList.join();
-	}
-	Lunch.prototype.removeLunchItem = function(index) {
-		if (typeof index === 'string') {
-			index = this.lunchList.inArray(index);
-		}
-		this.lunchList.splice(index, 1);
-		localStorage.lunch = this.lunchList.join();
-	}
-	Lunch.prototype.clear = function() {
-		this.lunchList = [];
-		localStorage.lunch = null;
-	}
-	Lunch.prototype.getJson = function(callback) {
-		var self = this;
-		var xhr = new XMLHttpRequest();
-		xhr.open('get', 'data/data.json', true);
-		xhr.onload = function(e) {
-			if (this.status === 200) {
-				var results = JSON.parse(this.responseText);
-				self.lunchList = results.lunchList;
-				localStorage.lunch = self.lunchList.join();
-				if (callback && typeof callback === 'function') {
-					callback();
-				}
-			} else {
-				console.log(e);
-			}
-		};
-		xhr.onerror = function(e) {
-			console.log(e);
-		};
-		xhr.send(null);
-	}
-	Lunch.prototype.judgeNull = function() {
-		this.getLunch()
-		if (this.lunchList.length == 0) {
-			this.getJson();
-		}
-	}
-	Lunch.prototype.showList = function() {
-		var html = '';
-		for (var i = 0; i < this.lunchList.length; i++) {
-			html += '<div class="item" data-index="' + i + '">' + this.lunchList[i] + '<span class="close">✕</span>' + '</div>'
-		}
-		document.getElementById('list_wrapper').innerHTML = html;
-	}
-	var lun = new Lunch();
-	lun.judgeNull();
-
-	/*
-	    bind shake
-	 */
-	var myShakeEvent = new Shake({
-		threshold: 5
-	});
-	myShakeEvent.start();
-	window.addEventListener('shake', shakeEventDidOccur, false);
-
-	function shakeEventDidOccur() {
-		if (page != 'main')
-			return;
-		var result = document.getElementById("result");
-
-		if (lun.lunchList.length == 0) {
-			result.innerHTML = '没有菜单,请编辑菜单';
-			return;
-		}
-
-		var num = Math.floor(Math.random() * lun.lunchList.length);
-		result.innerHTML = "摇得" + lun.lunchList[num] + "！";
-	}
-
-	/*
-	btn event
-	 */
-	document.getElementById('btn_default').addEvent('tap', function(eve) {
-		lun.getJson(function() {
-			lun.showList();
-		});
-	});
-
-	document.getElementById('btn_edit').addEvent('tap', function(eve) {
-		document.getElementById('edit_wrapper').style.display = 'block';
-		lun.showList();
-		page = 'edit';
-	});
-
-	document.getElementById('btn_return').addEvent('tap', function(eve) {
-		document.getElementById('edit_wrapper').style.display = 'none';
-		page = 'main';
-	});
-
-	document.getElementById('list_wrapper').delegate('tap', 'close', function(eve, target) {
-		var index = target.parentNode.attributes['data-index'].value;
-		lun.removeLunchItem(parseInt(index));
-		lun.showList();
-	});
-
-	document.getElementById('btn_add').addEvent('tap', function(eve) {
-		var menuItem = prompt('请输入菜单名:', '');
-		if (menuItem&&menuItem.trim()) {
-			lun.addLunchItem(menuItem);
-			lun.showList();
-		}
-	});
-})()
+    /*
+     bind shake
+     */
+    var myShakeEvent=new Shake({
+        threshold:10,
+        timeout: 3000
+    });
+    myShakeEvent.start();
+    window.addEventListener('shake',shakeEventDidOccur,false);
+    function shakeEventDidOccur(){
+        var audio=document.getElementById("shake_audio");
+        audio.pause();
+        audio.currentTime = 0;
+        audio.play();
+        setTimeout(function(){
+            var result=document.getElementById("reswrapper");
+            if(bodyVue.lunchList.length==0){
+                result.innerHTML='没有菜单,请编辑菜单';
+                return;
+            }
+            result.style.display='block';
+            result.classList.add('res-animate');
+            setTimeout(function(){
+                result.classList.remove('res-animate');
+            },2000);
+            var num=Math.floor(Math.random()*bodyVue.lunchList.length);
+            result.innerHTML="摇得《"+bodyVue.lunchList[num]+"》！";
+        },1000)
+    }
+})(window)
