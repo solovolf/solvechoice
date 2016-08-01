@@ -35,7 +35,7 @@
             没有菜单!<br>请点击下方加号按钮添加菜单
         </div>
         <div id="list_wrapper" v-show="lunchList.length>0">
-            <div v-for="item in lunchList" class="item" ><span class="menu_name">{{item}}</span><span
+            <div v-for="item in lunchList" class="item item-add" ><span class="menu_name">{{item}}</span><span
                     data-index="{{$index}}" class="close" @click="delMenuItem">✕</span></div>
         </div>
         <div id="btn_add" @click="addMenuItem">

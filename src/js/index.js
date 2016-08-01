@@ -3,7 +3,8 @@
         el:'#content',
         data:{
             pageState:0,
-            lunchList:[]
+            lunchList:[],
+            delflag:false
         },
         methods:{
             beginEditMenu:function(eve){
@@ -21,9 +22,18 @@
                 });
             },
             delMenuItem:function(eve){
+                if(this.delflag){
+                    return;
+                }
+                this.delflag=true;
                 var index=eve.currentTarget.getAttribute('data-index');
-                this.lunchList.splice(index,1);
-                localStorage.lunch=this.lunchList.join(',');
+                eve.currentTarget.parentNode.classList.add('item-remove');
+                var self=this;
+                setTimeout(function(){
+                    self.lunchList.splice(index,1);
+                    localStorage.lunch=self.lunchList.join(',');
+                    self.delflag=false;
+                },500);
             },
             addMenuItem:function(){
                 dialog.showPropmt('请输入菜单名称',function(msg){
