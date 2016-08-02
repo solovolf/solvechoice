@@ -18,7 +18,7 @@
     <!-- /build -->
 </head>
 <body>
-<div id="content">
+<div id="mb_content" v-if="clientType==0">
     <div id="main_content" v-show="pageState==1">
         <div id="editbtnwrapper">
             <input type="button" value="编辑菜单" id="btn_edit" @click="beginEditMenu">
@@ -42,18 +42,33 @@
             <img src="img/blossom_002.png">
         </div>
     </div>
-    <div id="loading" class="loaded" v-show="pageState==0">
-        <div class="loading_wrapper">
-            <div class="loader-inner pacman">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
+    <audio id="shake_audio" src="img/5018.mp3"></audio>
+</div>
+<div id="loading" class="loaded" v-show="pageState==0">
+    <div class="loading_wrapper">
+        <div class="loader-inner pacman">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
         </div>
     </div>
-    <audio id="shake_audio" src="img/5018.mp3"></audio>
+</div>
+<div id="pc_content" v-if="clientType==1">
+    <h1>待会吃什么</h1>
+    <span @click="pcEditMenu">编辑菜单</span>
+    <span>使用说明</span>
+    <input type="button" value="开始挑选" @click="startRandom">
+    <div id="pc_res">结果</div>
+
+    <div id="pc_menu" v-show="pageState==5">
+        <input type="button" value="恢复默认菜单" @click="resetMenu">
+        <input type="button" value="关闭菜单编辑页" @click="closeMenuBanner">
+        <div id="pc_list_wrapper" v-show="lunchList.length>0">
+            <div v-for="item in lunchList" >{{item}}</div>
+        </div>
+    </div>
 </div>
 <!-- build:js js/index.min.js -->
 <script src="js/shake.js"></script>

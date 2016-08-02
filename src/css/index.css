@@ -17,8 +17,8 @@ img{ vertical-align:middle; }
 @media screen and (min-width:768px){
     html{ font-size:14px;}
 }
-body{margin: 0;height: 100%;}
-html,#content{height: 100%;}
+body{margin: 0;height: 100%;background-color:#000}
+html,#mb_content,#pc_content{height: 100%;}
 input{-webkit-appearance: none;border-radius: 0;}
 
 
@@ -72,6 +72,14 @@ input{-webkit-appearance: none;border-radius: 0;}
     90%{-webkit-transform:translateY(-10px);}
     100%{-webkit-transform:translateY(0px);}
 }
+
+
+
+
+#pc_content{width:800px;color:#FFFFFF;margin: 0 auto;}
+#pc_menu{position: fixed;top: 0;right: 0;bottom: 0;background-color: #ff8e2c;width: 300px;}
+
+
 
 
 @-webkit-keyframes pacman-balls{
