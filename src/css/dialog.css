@@ -6,7 +6,7 @@
 
 
 #y_confirm{position:fixed;z-index:99;left:0;top:0;bottom:0;right:0;background-color:rgba(0, 0, 0, 0.6);display:none;}
-#y_confirm .y_dialog_content{background-color:#FAFAFC;text-align:center;width:80%;margin:50% auto;overflow:hidden;border-radius:4px;}
+#y_confirm .y_dialog_content{background-color:#FAFAFC;text-align:center;width:80%;margin:30% auto;overflow:hidden;border-radius:4px;}
 #y_confirm .tit{color:#000000;font-size:18px;line-height:2;margin:12px auto 10px auto;}
 #y_confirm .content{color:#888888;font-size:15px;border-bottom:1px solid #e7e7e9;padding:0 20px 20px 20px;}
 #y_confirm .btn{color:#11b312;background-color:transparent;border:#64a7a0;font-size:17px;height:40px;width:50%;display:inline;float:left;box-sizing:border-box;}

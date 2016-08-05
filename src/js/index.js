@@ -1,5 +1,14 @@
 (function (golbal) {
-    var myShakeEvent=null;
+    var browser_v=client();
+    if(browser_v.browser.ie&&browser_v.browser.ver<9){
+    // if(true){
+        document.body.style.backgroundColor='#FFFFFF';
+        document.body.style.textAlign='center';
+        document.body.innerHTML=('<h2 style="margin-top: 40px;font-size: 30px;">此网站不支持ie9及以下浏览器<br>请下载最新版本的chrome内核的浏览器(比如:猎豹浏览器)</h2><br><a style="font-size: 20px" href="http://www.liebao.cn/download.html">猎豹浏览器下载页</a><br><br><a style="font-size: 20px" href="http://dl.liebao.cn/kb/KSBrowser_5.3.108.11949_r1.exe">猎豹浏览器安装包</a>');
+        return;
+    }
+
+    var myShakeEvent = null;
 
     var bodyVue = new Vue({
         el: 'body',
@@ -51,28 +60,28 @@
                 });
                 document.querySelector('#y_propmt .inputcontent').focus();
             },
-            pcEditMenu:function(){
-                this.pageState=5;
+            pcEditMenu: function () {
+                this.pageState = 5;
             },
-            closeMenuBanner:function(){
-                this.pageState=4;
+            closeMenuBanner: function () {
+                this.pageState = 4;
             },
-            startRandom:function(){
+            startRandom: function () {
                 var self = this;
-                var count=self.lunchList.length-1;
-                var res=document.getElementById('pc_res');
-                var curIndex=0
-                var interval=window.setInterval(function(){
-                    if(++curIndex>count){
-                        curIndex=0
+                var count = self.lunchList.length - 1;
+                var res = document.getElementById('pc_res');
+                var curIndex = 0
+                var interval = window.setInterval(function () {
+                    if (++curIndex > count) {
+                        curIndex = 0
                     }
-                    res.innerHTML=self.lunchList[curIndex];
-                },100);
-                setTimeout(function(){
+                    res.innerHTML = self.lunchList[curIndex];
+                }, 100);
+                setTimeout(function () {
                     clearInterval(interval);
-                    var index=parseInt(Math.random()*count);
-                    res.innerHTML=self.lunchList[index];
-                },2000);
+                    var index = parseInt(Math.random() * count);
+                    res.innerHTML = self.lunchList[index];
+                }, 2000);
             }
         }
     });
@@ -135,9 +144,9 @@
                     result.innerHTML = "摇得《" + bodyVue.lunchList[num] + "》！";
                 }, 1000)
             }
-        }else{
-            bodyVue.clientType=1;
-            bodyVue.pageState=4;
+        } else {
+            bodyVue.clientType = 1;
+            bodyVue.pageState = 4;
         }
     });
 })(window)
