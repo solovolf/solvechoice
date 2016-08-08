@@ -1,10 +1,9 @@
 (function (golbal) {
-    var browser_v=client();
-    if(browser_v.browser.ie&&browser_v.browser.ver<9){
+    if(typeof document.addEventListener === 'undefined'){
     // if(true){
         document.body.style.backgroundColor='#FFFFFF';
         document.body.style.textAlign='center';
-        document.body.innerHTML=('<h2 style="margin-top: 40px;font-size: 30px;">此网站不支持ie9及以下浏览器<br>请下载最新版本的chrome内核的浏览器(比如:猎豹浏览器)</h2><br><a style="font-size: 20px" href="http://www.liebao.cn/download.html">猎豹浏览器下载页</a><br><br><a style="font-size: 20px" href="http://dl.liebao.cn/kb/KSBrowser_5.3.108.11949_r1.exe">猎豹浏览器安装包</a>');
+        document.body.innerHTML=('<h2 style="margin-top: 40px;font-size: 30px;">此网站不支持ie8及以下浏览器<br>请下载最新版本的chrome内核的浏览器(比如:猎豹浏览器)</h2><br><a style="font-size: 20px" href="http://www.liebao.cn/download.html">猎豹浏览器下载页</a><br><br><a style="font-size: 20px" href="http://dl.liebao.cn/kb/KSBrowser_5.3.108.11949_r1.exe">猎豹浏览器安装包</a>');
         return;
     }
 
