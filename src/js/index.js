@@ -14,8 +14,7 @@
         data: {
             clientType: 0,//0移动,1pc
             pageState: 0,//1,移动首页/2,移动菜单/3,pc首页
-            lunchList: [],
-            delflag: false
+            lunchList: []
         },
         methods: {
             beginEditMenu: function (eve) {
@@ -33,18 +32,9 @@
                 });
             },
             delMenuItem: function (eve) {
-                if (this.delflag) {
-                    return;
-                }
-                this.delflag = true;
                 var index = eve.currentTarget.getAttribute('data-index');
-                eve.currentTarget.parentNode.classList.add('item-remove');
-                var self = this;
-                setTimeout(function () {
-                    self.lunchList.splice(index, 1);
-                    localStorage.lunch = self.lunchList.join(',');
-                    self.delflag = false;
-                }, 500);
+                this.lunchList.splice(index, 1);
+                localStorage.lunch = this.lunchList.join(',');
             },
             addMenuItem: function () {
                 dialog.showPropmt('请输入菜单名称', function (msg) {
