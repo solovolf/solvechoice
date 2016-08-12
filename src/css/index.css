@@ -21,24 +21,6 @@ body{margin: 0;height: 100%;background-color:#000;}
 html,#mb_content,#pc_content{height: 100%;}
 input{-webkit-appearance: none;border-radius: 0;}
 
-
-.item-add{
-    -webkit-animation: itemadd 0.5s;
-}
-@-webkit-keyframes itemadd{
-    from{opacity: 0;}
-    to{opacity: 1;}
-}
-
-.item-remove{
-    -webkit-animation: itemremove 0.5s;
-}
-@-webkit-keyframes itemremove{
-    from{opacity: 1;}
-    to{opacity: 0;}
-}
-
-
 #none_menu{color: #FFFFFF;text-align: center;font-size:16px;margin:40px 5%;background-color:rgba(0,0,0,0.8);width: 90%;height: 80px;border-radius: 10px;line-height: 20px;padding-top: 30px;float: right;clear: both;}
 #main_content{ position:fixed; top:0; left:0; width:100%; height:100%; background-color:#FFFFFF; z-index:1; text-align:center }
 #editbtnwrapper{ background-image:url('../img/bg.jpg'); background-size:100%; height:32vh; background-position:0 -10vh; line-height:32vh; vertical-align:middle; text-align:center; }
@@ -77,10 +59,10 @@ input{-webkit-appearance: none;border-radius: 0;}
 
 
 #pc_content{width:800px;color:#FFFFFF;margin: 0 auto;text-align: center;position: relative;overflow: hidden;}
-#pc_menu{position: fixed;top: 0;right: 0;bottom: 0;background-color: #ff8e2c;width: 300px;}
+#pc_menu{position: fixed;top: 0;right: 0;bottom: 0;background-color: #ff8e2c;width: 300px;overflow: auto;}
 #pc_content h1{font-size: 40px;line-height: 1;margin: 40px 0;}
-#pc_editbtn{position: absolute;left: 100px;top: 0;font-size: 16px;cursor: pointer;border: 1px solid #FFFFFF;padding: 10px;}
-#pc_explain{position: absolute;top: 0;left: 0;font-size: 16px;cursor: pointer;border: 1px solid #FFFFFF;padding: 10px;}
+#pc_editbtn{position: absolute;left: 100px;top: 10px;font-size: 16px;cursor: pointer;border: 1px solid #FFFFFF;padding: 10px;}
+#pc_explain{position: absolute;top: 10px;left: 0;font-size: 16px;cursor: pointer;border: 1px solid #FFFFFF;padding: 10px;}
 #pc_start_random{background-color:#000002;border:1px solid #FFFFFF;outline: 0;color: #FFFFFF;font-size: 20px;width: 110px;height: 44px;line-height: 40px;cursor: pointer;}
 #pc_res{margin-top: 20px;font-size: 20px;}
 .pc_menubtn{color:#F24747;background-color:transparent;padding: 4px;border:1px solid #F24747;margin: 10px;font-size: 16px;cursor: pointer;}
@@ -89,6 +71,13 @@ input{-webkit-appearance: none;border-radius: 0;}
 .pc_menuitem p{display: inline-block}
 .pc_menuitem span{float: right;font-weight: 200;font-size: 22px;cursor: pointer;}
 #pc_addmenu{color:#F24747;background-color:transparent;padding: 4px;border:1px solid #F24747;margin: 10px;font-size: 16px;cursor: pointer;}
+
+.expand-transition {
+    transition: all .4s ease;
+}
+.expand-enter, .expand-leave {
+    opacity: 0;
+}
 
 
 @-webkit-keyframes pacman-balls{

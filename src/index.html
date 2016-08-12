@@ -35,7 +35,7 @@
             没有菜单!<br>请点击下方加号按钮添加菜单
         </div>
         <div id="list_wrapper" v-show="lunchList.length>0">
-            <div v-for="item in lunchList" class="item item-add" ><span class="menu_name">{{item}}</span><span
+            <div v-for="item in lunchList" class="item item-add" transition="expand"><span class="menu_name">{{item}}</span><span
                     data-index="{{$index}}" class="close" @click="delMenuItem">✕</span></div>
         </div>
         <div id="btn_add" @click="addMenuItem">
@@ -62,11 +62,11 @@
     <input type="button" value="开始挑选" @click="startRandom" id="pc_start_random">
     <div id="pc_res"></div>
 
-    <div id="pc_menu" v-show="pageState==5">
+    <div id="pc_menu" v-show="pageState==5" transition="expand">
         <input type="button" class="pc_menubtn" value="恢复默认菜单" @click="resetMenu">
         <input type="button" class="pc_menubtn" value="关闭菜单编辑页" @click="closeMenuBanner">
         <div id="pc_list_wrapper" v-show="lunchList.length>0">
-            <div class="pc_menuitem" v-for="item in lunchList" >
+            <div class="pc_menuitem" v-for="item in lunchList" transition="expand">
                 <p>{{item}}</p>
                 <span @click="delMenuItem">×</span>
             </div>
